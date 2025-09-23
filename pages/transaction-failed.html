@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Failed - NPCI Payment Simulator</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="result-container">
+            <div class="result-card">
+                <div class="result-icon failure">✗</div>
+                <h1 class="result-title">Transaction Failed</h1>
+                <p class="result-message">❌ Your payment could not be processed. Please try again.</p>
+                <button class="action-btn" onclick="retryPayment()">Retry Payment</button>
+                <div style="margin-top: 15px;">
+                    <a href="checkout.html" style="color: #0d236a; text-decoration: none;">← Back to Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

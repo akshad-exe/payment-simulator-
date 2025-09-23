@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Simulation - NPCI Payment Simulator</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="payment-container">
+            <div class="payment-card">
+                <h1 class="payment-title">Choose Payment Result</h1>
+                <p>Select an outcome to simulate the payment process</p>
+                
+                <div class="processing" id="processing">
+                    <div class="spinner"></div>
+                    <p>Processing payment...</p>
+                </div>
+                
+                <div class="button-container">
+                    <button class="payment-btn success-btn" onclick="simulatePayment(true)">✅ Simulate Success</button>
+                    <button class="payment-btn failure-btn" onclick="simulatePayment(false)">❌ Simulate Failure</button>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <a href="checkout.html" style="color: #0d236a; text-decoration: none;">← Back to Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

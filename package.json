@@ -1,0 +1,13 @@
+{
+  "name": "npci-payment-simulator",
+  "version": "1.0.0",
+  "description": "A simple NPCI-like payment simulator with API integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["payment", "simulator", "npci", "razorpay"],
+  "author": "Payment Simulator Developer",
+  "license": "MIT"
+}
