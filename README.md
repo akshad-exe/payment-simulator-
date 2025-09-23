@@ -105,6 +105,26 @@ You can customize the payment flow by modifying:
 - `style.css` for visual changes
 - `script.js` for client-side behavior and API integration
 
+## Deployment
+
+### Vercel Deployment
+
+This project is ready to be deployed on Vercel. Follow these steps:
+
+1. Push your code to a GitHub repository
+2. Go to [Vercel](https://vercel.com/) and sign up or log in
+3. Click "New Project"
+4. Import your GitHub repository
+5. Configure the project settings:
+   - Framework Preset: Other
+   - Root Directory: Leave empty
+   - Build Command: `echo 'No build step required'`
+   - Output Directory: Leave empty
+6. Click "Deploy"
+7. Your site will be live within minutes!
+
+The `vercel.json` file in the project includes necessary rewrite rules and CORS headers for proper functionality.
+
 ## License
 
 This project is open source and available under the MIT License.
