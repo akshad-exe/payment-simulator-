@@ -16,14 +16,20 @@ function simulatePayment(isSuccess) {
     // Show processing indicator
     document.getElementById('processing').style.display = 'block';
     
+    // Get user details from localStorage or use defaults
+    const senderName = localStorage.getItem('senderName') || "John Doe";
+    const senderPhone = localStorage.getItem('senderPhone') || "+919876543210";
+    const senderUpi = localStorage.getItem('senderUpi') || "user@upi";
+    const paymentAmount = localStorage.getItem('paymentAmount') || "4560.00";
+    
     // Create transaction first
     const transactionData = {
-        amount: 4560.00,
-        sender_upi_id: "user@upi",
+        amount: parseFloat(paymentAmount),
+        sender_upi_id: senderUpi,
         receiver_upi_id: "merchant@upi",
-        sender_name: "John Doe",
+        sender_name: senderName,
         receiver_name: "Merchant Account",
-        sender_phone: "+919876543210",
+        sender_phone: senderPhone,
         receiver_phone: "+919876543211"
     };
     

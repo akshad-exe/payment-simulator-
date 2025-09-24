@@ -13,11 +13,27 @@
                 <div class="result-icon success">✓</div>
                 <h1 class="result-title">Transaction Successful</h1>
                 <p class="result-message">✅ Your payment has been processed successfully</p>
+                <p class="transaction-details" id="transaction-details"></p>
+                <p class="user-greeting" id="user-greeting"></p>
                 <button class="action-btn" onclick="goToCheckout()">Continue Shopping</button>
             </div>
         </div>
     </div>
 
     <script src="../js/script.js"></script>
+    <script>
+        // Display transaction details
+        window.onload = function() {
+            const senderName = localStorage.getItem('senderName');
+            const paymentAmount = localStorage.getItem('paymentAmount') || "4560.00";
+            
+            if (senderName) {
+                document.getElementById('user-greeting').innerHTML = `Thank you, <strong>${senderName}</strong>!`;
+            }
+            
+            document.getElementById('transaction-details').innerHTML = 
+                `Amount: <strong>₹${parseFloat(paymentAmount).toFixed(2)}</strong>`;
+        };
+    </script>
 </body>
 </html>

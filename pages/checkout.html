@@ -24,7 +24,19 @@
                     </div>
                     <div class="product-pricing">
                         <div class="original-price">₹4660</div>
-                        <div class="discounted-price">₹4560</div>
+                        <div class="discounted-price">₹<span id="amount-display">4560</span></div>
+                    </div>
+                </div>
+                
+                <!-- Amount Input -->
+                <div class="amount-section">
+                    <div class="section-header">
+                        <span>💰</span> Payment Amount
+                    </div>
+                    <div class="form-group">
+                        <label for="payment-amount">Enter Amount (₹)</label>
+                        <input type="number" id="payment-amount" name="payment-amount" placeholder="Enter payment amount" min="1" step="0.01" value="4560" required>
+                        <button type="button" class="save-amount-btn" onclick="updateAmount()">Update Amount</button>
                     </div>
                 </div>
                 
@@ -42,11 +54,33 @@
                     </div>
                 </div>
                 
-                <!-- Logged-in Mobile -->
+                <!-- User Details Form -->
+                <div class="user-details-section">
+                    <div class="section-header">
+                        <span>👤</span> Your Details
+                    </div>
+                    <form id="user-details-form">
+                        <div class="form-group">
+                            <label for="sender-name">Full Name</label>
+                            <input type="text" id="sender-name" name="sender-name" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sender-phone">Phone Number</label>
+                            <input type="tel" id="sender-phone" name="sender-phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sender-upi">UPI ID</label>
+                            <input type="text" id="sender-upi" name="sender-upi" placeholder="yourname@upi" required>
+                        </div>
+                        <button type="button" class="save-details-btn" onclick="saveUserDetails()">Save Details</button>
+                    </form>
+                </div>
+                
+                <!-- Logged-in Mobile (will be updated with user input) -->
                 <div class="mobile-section">
                     <div class="mobile-label">Logged in as</div>
-                    <div class="mobile-number">+91 9876543210</div>
-                    <button class="change-btn">Change</button>
+                    <div class="mobile-number" id="display-phone">+91 9876543210</div>
+                    <button class="change-btn" onclick="toggleDetailsForm()">Change</button>
                 </div>
             </div>
             
@@ -91,11 +125,101 @@
                 </div>
                 
                 <!-- Pay Now Button -->
-                <button class="pay-now-btn" onclick="proceedToPayment()">Pay Now ₹4560</button>
+                <button class="pay-now-btn" onclick="proceedToPayment()">Pay Now ₹<span id="pay-button-amount">4560</span></button>
             </div>
         </div>
     </div>
 
     <script src="../js/script.js"></script>
+    <script>
+        // Function to update payment amount
+        function updateAmount() {
+            const amountInput = document.getElementById('payment-amount');
+            const amount = parseFloat(amountInput.value);
+            
+            if (amount && amount > 0) {
+                // Save to localStorage
+                localStorage.setItem('paymentAmount', amount.toFixed(2));
+                
+                // Update display
+                document.getElementById('amount-display').textContent = amount.toFixed(2);
+                document.getElementById('pay-button-amount').textContent = amount.toFixed(2);
+                
+                alert('Amount updated successfully!');
+            } else {
+                alert('Please enter a valid amount.');
+            }
+        }
+        
+        // Function to save user details
+        function saveUserDetails() {
+            const name = document.getElementById('sender-name').value;
+            const phone = document.getElementById('sender-phone').value;
+            const upi = document.getElementById('sender-upi').value;
+            
+            if (name && phone && upi) {
+                // Save to localStorage
+                localStorage.setItem('senderName', name);
+                localStorage.setItem('senderPhone', phone);
+                localStorage.setItem('senderUpi', upi);
+                
+                // Update display
+                document.getElementById('display-phone').textContent = phone;
+                
+                // Hide form and show saved details
+                document.querySelector('.user-details-section').style.display = 'none';
+                document.querySelector('.mobile-section').style.display = 'block';
+                
+                alert('Details saved successfully!');
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+        
+        // Function to toggle details form visibility
+        function toggleDetailsForm() {
+            const formSection = document.querySelector('.user-details-section');
+            const mobileSection = document.querySelector('.mobile-section');
+            
+            if (formSection.style.display === 'none' || formSection.style.display === '') {
+                // Show form, hide mobile section
+                formSection.style.display = 'block';
+                mobileSection.style.display = 'none';
+                
+                // Pre-fill form with saved data if available
+                const savedName = localStorage.getItem('senderName');
+                const savedPhone = localStorage.getItem('senderPhone');
+                const savedUpi = localStorage.getItem('senderUpi');
+                
+                if (savedName) document.getElementById('sender-name').value = savedName;
+                if (savedPhone) document.getElementById('sender-phone').value = savedPhone;
+                if (savedUpi) document.getElementById('sender-upi').value = savedUpi;
+            } else {
+                // Hide form, show mobile section
+                formSection.style.display = 'none';
+                mobileSection.style.display = 'block';
+            }
+        }
+        
+        // Load saved details on page load
+        window.onload = function() {
+            // Load saved amount
+            const savedAmount = localStorage.getItem('paymentAmount');
+            if (savedAmount) {
+                document.getElementById('payment-amount').value = savedAmount;
+                document.getElementById('amount-display').textContent = savedAmount;
+                document.getElementById('pay-button-amount').textContent = savedAmount;
+            }
+            
+            // Load saved user details
+            const savedPhone = localStorage.getItem('senderPhone');
+            if (savedPhone) {
+                document.getElementById('display-phone').textContent = savedPhone;
+            }
+            
+            // Initially hide the form
+            document.querySelector('.user-details-section').style.display = 'none';
+        };
+    </script>
 </body>
 </html>
