@@ -11,6 +11,16 @@ function proceedToPayment() {
     window.location.href = 'payment.html';
 }
 
+// Utility function to handle fetch with timeout
+function fetchWithTimeout(url, options, timeout = 10000) {
+    return Promise.race([
+        fetch(url, options),
+        new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Request timeout')), timeout)
+        )
+    ]);
+}
+
 // Function to simulate payment (success or failure) using the external API
 function simulatePayment(isSuccess) {
     // Show processing indicator
@@ -33,17 +43,32 @@ function simulatePayment(isSuccess) {
         receiver_phone: "+919876543211"
     };
     
-    // Use fetch with error handling
-    fetch(`${API_BASE_URL}/`, {
+    // Use fetch with comprehensive error handling and timeout
+    fetchWithTimeout(`${API_BASE_URL}/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(transactionData)
-    })
+    }, 10000) // 10 second timeout
     .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        // Handle different HTTP status codes
+        if (response.status === 400) {
+            throw new Error('Bad Request: Invalid transaction data');
+        } else if (response.status === 401) {
+            throw new Error('Unauthorized: Authentication required');
+        } else if (response.status === 403) {
+            throw new Error('Forbidden: Access denied');
+        } else if (response.status === 404) {
+            throw new Error('Not Found: API endpoint not found');
+        } else if (response.status === 408) {
+            throw new Error('Request Timeout: Server timed out waiting for the request');
+        } else if (response.status === 429) {
+            throw new Error('Too Many Requests: Rate limit exceeded');
+        } else if (response.status >= 500) {
+            throw new Error(`Server Error: ${response.status} - ${response.statusText}`);
+        } else if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
         }
         return response.json();
     })
@@ -52,20 +77,35 @@ function simulatePayment(isSuccess) {
         if (data.id) {
             // Update transaction status based on isSuccess parameter
             const status = isSuccess ? 'success' : 'failed';
-            return fetch(`${API_BASE_URL}/${data.id}/status`, {
+            return fetchWithTimeout(`${API_BASE_URL}/${data.id}/status`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ status: status })
-            });
+            }, 10000); // 10 second timeout
         } else {
-            throw new Error('Failed to create transaction');
+            throw new Error('Failed to create transaction: Invalid response from server');
         }
     })
     .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        // Handle different HTTP status codes for status update
+        if (response.status === 400) {
+            throw new Error('Bad Request: Invalid status update data');
+        } else if (response.status === 401) {
+            throw new Error('Unauthorized: Authentication required for status update');
+        } else if (response.status === 403) {
+            throw new Error('Forbidden: Access denied for status update');
+        } else if (response.status === 404) {
+            throw new Error('Not Found: Transaction not found');
+        } else if (response.status === 409) {
+            throw new Error('Conflict: Transaction status cannot be updated');
+        } else if (response.status === 429) {
+            throw new Error('Too Many Requests: Rate limit exceeded for status update');
+        } else if (response.status >= 500) {
+            throw new Error(`Server Error: ${response.status} - ${response.statusText} during status update`);
+        } else if (!response.ok) {
+            throw new Error(`HTTP error during status update! status: ${response.status} - ${response.statusText}`);
         }
         return response.json();
     })
@@ -82,13 +122,11 @@ function simulatePayment(isSuccess) {
     })
     .catch(error => {
         console.error('Error in transaction process:', error);
-        // Even if API fails, we still redirect to show the result
+        // Store error details in sessionStorage to display on failure page
+        sessionStorage.setItem('transactionError', error.message);
+        // For production-like behavior, we'll show failure for any error
         setTimeout(() => {
-            if (isSuccess) {
-                window.location.href = 'transaction-success.html';
-            } else {
-                window.location.href = 'transaction-failed.html';
-            }
+            window.location.href = 'transaction-failed.html';
         }, 1500);
     });
 }

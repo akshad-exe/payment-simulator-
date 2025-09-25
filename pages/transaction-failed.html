@@ -15,6 +15,7 @@
                 <p class="result-message">❌ Your payment could not be processed. Please try again.</p>
                 <p class="transaction-details" id="transaction-details"></p>
                 <p class="user-greeting" id="user-greeting"></p>
+                <p class="error-details" id="error-details" style="display: none; color: #dc3545; font-size: 0.9rem; margin: 10px 0;"></p>
                 <button class="action-btn" onclick="retryPayment()">Retry Payment</button>
                 <div style="margin-top: 15px;">
                     <a href="checkout.html" style="color: #0d236a; text-decoration: none;">← Back to Checkout</a>
@@ -25,7 +26,7 @@
 
     <script src="../js/script.js"></script>
     <script>
-        // Display transaction details
+        // Display transaction details and error information
         window.onload = function() {
             const senderName = localStorage.getItem('senderName');
             const paymentAmount = localStorage.getItem('paymentAmount') || "4560.00";
@@ -36,6 +37,15 @@
             
             document.getElementById('transaction-details').innerHTML = 
                 `Amount: <strong>₹${parseFloat(paymentAmount).toFixed(2)}</strong>`;
+            
+            // Check for error details in sessionStorage (set by script.js on error)
+            const errorDetails = sessionStorage.getItem('transactionError');
+            if (errorDetails) {
+                document.getElementById('error-details').innerHTML = `Error: ${errorDetails}`;
+                document.getElementById('error-details').style.display = 'block';
+                // Clear the error from sessionStorage
+                sessionStorage.removeItem('transactionError');
+            }
         };
     </script>
 </body>

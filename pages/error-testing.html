@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Testing - NPCI Payment Simulator</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="result-container">
+            <div class="result-card">
+                <h1 class="result-title">Error Testing</h1>
+                <p class="result-message">Test different HTTP error responses</p>
+                
+                <div class="error-testing-section">
+                    <div class="section-header">
+                        <span>🧪</span> Simulate HTTP Errors
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="error-type">Select Error Type:</label>
+                        <select id="error-type" class="form-control">
+                            <option value="network">Network Error</option>
+                            <option value="timeout">Timeout Error</option>
+                            <option value="400">400 Bad Request</option>
+                            <option value="401">401 Unauthorized</option>
+                            <option value="403">403 Forbidden</option>
+                            <option value="404">404 Not Found</option>
+                            <option value="408">408 Request Timeout</option>
+                            <option value="429">429 Too Many Requests</option>
+                            <option value="500">500 Internal Server Error</option>
+                            <option value="502">502 Bad Gateway</option>
+                            <option value="503">503 Service Unavailable</option>
+                        </select>
+                    </div>
+                    
+                    <button class="action-btn" onclick="simulateError()">Simulate Error</button>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <a href="checkout.html" style="color: #0d236a; text-decoration: none;">← Back to Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function simulateError() {
+            const errorType = document.getElementById('error-type').value;
+            let errorMessage = '';
+            
+            switch(errorType) {
+                case 'network':
+                    errorMessage = 'Network Error: Failed to connect to the server';
+                    break;
+                case 'timeout':
+                    errorMessage = 'Request timeout: The request took too long to complete';
+                    break;
+                case '400':
+                    errorMessage = 'Bad Request: Invalid transaction data';
+                    break;
+                case '401':
+                    errorMessage = 'Unauthorized: Authentication required';
+                    break;
+                case '403':
+                    errorMessage = 'Forbidden: Access denied';
+                    break;
+                case '404':
+                    errorMessage = 'Not Found: API endpoint not found';
+                    break;
+                case '408':
+                    errorMessage = 'Request Timeout: Server timed out waiting for the request';
+                    break;
+                case '429':
+                    errorMessage = 'Too Many Requests: Rate limit exceeded';
+                    break;
+                case '500':
+                    errorMessage = 'Server Error: 500 - Internal Server Error';
+                    break;
+                case '502':
+                    errorMessage = 'Server Error: 502 - Bad Gateway';
+                    break;
+                case '503':
+                    errorMessage = 'Server Error: 503 - Service Unavailable';
+                    break;
+                default:
+                    errorMessage = 'Unknown error occurred';
+            }
+            
+            // Store error details in sessionStorage
+            sessionStorage.setItem('transactionError', errorMessage);
+            
+            // Redirect to transaction failed page
+            window.location.href = 'transaction-failed.html';
+        }
+    </script>
+    
+    <style>
+        .error-testing-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #0d236a;
+            box-shadow: 0 0 0 2px rgba(13, 35, 106, 0.1);
+        }
+    </style>
+</body>
+</html>
