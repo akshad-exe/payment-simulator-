@@ -132,13 +132,45 @@
                     <a href="error-testing.html" style="color: #0d236a; text-decoration: none; font-size: 0.9rem;">
                         🧪 Error Testing
                     </a>
+                    <br>
+                    <a href="api-test.html" style="color: #0d236a; text-decoration: none; font-size: 0.9rem; margin-top: 5px; display: inline-block;">
+                        🔧 API Test
+                    </a>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal Popup -->
+    <div id="custom-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="modal-title">Notification</span>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">Operation completed successfully!</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="closeModal()">OK</button>
             </div>
         </div>
     </div>
 
     <script src="../js/script.js"></script>
     <script>
+        // Function to show custom modal
+        function showModal(title, message) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            document.getElementById('custom-modal').style.display = 'block';
+        }
+        
+        // Function to close modal
+        function closeModal() {
+            document.getElementById('custom-modal').style.display = 'none';
+        }
+        
         // Function to update payment amount
         function updateAmount() {
             const amountInput = document.getElementById('payment-amount');
@@ -152,9 +184,10 @@
                 document.getElementById('amount-display').textContent = amount.toFixed(2);
                 document.getElementById('pay-button-amount').textContent = amount.toFixed(2);
                 
-                alert('Amount updated successfully!');
+                // Show custom modal instead of alert
+                showModal('Amount Updated', 'Payment amount has been updated successfully!');
             } else {
-                alert('Please enter a valid amount.');
+                showModal('Invalid Amount', 'Please enter a valid amount.');
             }
         }
         
@@ -177,9 +210,10 @@
                 document.querySelector('.user-details-section').style.display = 'none';
                 document.querySelector('.mobile-section').style.display = 'block';
                 
-                alert('Details saved successfully!');
+                // Show custom modal instead of alert
+                showModal('Details Saved', 'Your details have been saved successfully!');
             } else {
-                alert('Please fill in all fields.');
+                showModal('Missing Information', 'Please fill in all fields.');
             }
         }
         
@@ -205,6 +239,14 @@
                 // Hide form, show mobile section
                 formSection.style.display = 'none';
                 mobileSection.style.display = 'block';
+            }
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('custom-modal');
+            if (event.target == modal) {
+                closeModal();
             }
         }
         

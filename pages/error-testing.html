@@ -45,7 +45,43 @@
         </div>
     </div>
 
+    <!-- Custom Modal Popup -->
+    <div id="custom-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="modal-title">Notification</span>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">Operation completed successfully!</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="closeModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Function to show custom modal
+        function showModal(title, message) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            document.getElementById('custom-modal').style.display = 'block';
+        }
+        
+        // Function to close modal
+        function closeModal() {
+            document.getElementById('custom-modal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('custom-modal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+        
         function simulateError() {
             const errorType = document.getElementById('error-type').value;
             let errorMessage = '';
@@ -91,33 +127,14 @@
             // Store error details in sessionStorage
             sessionStorage.setItem('transactionError', errorMessage);
             
-            // Redirect to transaction failed page
-            window.location.href = 'transaction-failed.html';
+            // Show confirmation modal
+            showModal('Error Simulated', 'The selected error has been simulated. You will now be redirected to the transaction failed page.');
+            
+            // Redirect to transaction failed page after a short delay
+            setTimeout(() => {
+                window.location.href = 'transaction-failed.html';
+            }, 2000);
         }
     </script>
-    
-    <style>
-        .error-testing-section {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-            box-sizing: border-box;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: #0d236a;
-            box-shadow: 0 0 0 2px rgba(13, 35, 106, 0.1);
-        }
-    </style>
 </body>
 </html>
