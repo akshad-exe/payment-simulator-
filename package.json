@@ -1,14 +1,37 @@
 {
   "name": "npci-payment-simulator",
-  "version": "1.0.0",
-  "description": "A simple NPCI-like payment simulator with API integration",
+  "version": "1.1.0",
+  "description": "A lightweight frontend-based simulation of an NPCI-like payment system with realistic error handling and API integration",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js",
-    "build": "echo 'No build step required for static site'"
+    "dev": "node js/server.js",
+    "build": "echo 'No build step required for static site'",
+    "test": "echo 'No tests configured'",
+    "deploy": "echo 'Ready for deployment to Vercel or similar static hosting platforms'",
+    "serve": "npx http-server . -p 8080"
   },
-  "keywords": ["payment", "simulator", "npci", "razorpay"],
-  "author": "Payment Simulator Developer",
-  "license": "MIT"
+  "keywords": [
+    "payment", 
+    "simulator", 
+    "npci", 
+    "razorpay", 
+    "upi", 
+    "transaction", 
+    "demo", 
+    "testing"
+  ],
+  "author": "Payment Simulator Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akshad-exe/payment-simulator-.git"
+  },
+  "bugs": {
+    "url": "https://github.com/akshad-exe/payment-simulator-/issues"
+  },
+  "homepage": "https://github.com/akshad-exe/payment-simulator-#readme",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
 }

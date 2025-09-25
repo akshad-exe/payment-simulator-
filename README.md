@@ -8,6 +8,10 @@ A lightweight NPCI-like payment simulator built using HTML, CSS, JavaScript. Thi
 - Integration with external API for transaction creation and status updates
 - Responsive Razorpay-style UI with modern design elements
 - Mock success/failure API endpoints
+- User customizable details (name, phone, UPI ID)
+- Adjustable payment amounts
+- Comprehensive HTTP error handling and simulation
+- Production-like error workflows
 
 ## Project Structure
 
@@ -17,6 +21,7 @@ A lightweight NPCI-like payment simulator built using HTML, CSS, JavaScript. Thi
 ├── payment.html        # Payment simulation page
 ├── transaction-success.html  # Success result page
 ├── transaction-failed.html   # Failure result page
+├── error-testing.html  # Error simulation page
 ├── style.css           # Styles for all pages
 ├── script.js           # Client-side JavaScript with API integration
 ├── test-api.html       # API testing page
@@ -50,15 +55,19 @@ The frontend integrates with the following external API endpoints hosted at `htt
 Since this is a frontend-only project, you can run it in any web server or directly open the HTML files in a browser.
 
 ### Option 1: Using a local web server
-1. Install a simple HTTP server (if you don't have one):
+1. Install dependencies:
    ```bash
-   npm install -g http-server
+   npm install
    ```
-2. Start the server:
+2. Start the development server:
    ```bash
-   http-server
+   npm run serve
    ```
-3. Open your browser and navigate to the provided URL (typically `http://localhost:8080`)
+   or
+   ```bash
+   npm start
+   ```
+3. Open your browser and navigate to `http://localhost:8080`
 
 ### Option 2: Direct browser access
 1. Open `index.html` directly in your browser
@@ -69,9 +78,21 @@ Since this is a frontend-only project, you can run it in any web server or direc
 1. Open the landing page
 2. Click "Proceed to Checkout"
 3. Review order details on the checkout page
-4. Choose a payment method or scan QR code
-5. On the payment page, select either "Simulate Success" or "Simulate Failure"
-6. View the transaction result on the success or failure page
+4. Update payment amount if needed
+5. Enter your personal details (name, phone, UPI ID)
+6. Choose a payment method or scan QR code
+7. On the payment page, select either "Simulate Success" or "Simulate Failure"
+8. View the transaction result on the success or failure page
+
+## Error Testing
+
+The simulator includes comprehensive error handling that mimics real-world payment systems:
+- Network errors
+- Timeout errors
+- HTTP status code errors (4xx, 5xx)
+- API-specific error responses
+
+To test error scenarios, use the "Error Testing" link on the checkout page.
 
 ## Testing APIs
 
@@ -124,6 +145,14 @@ This project is ready to be deployed on Vercel. Follow these steps:
 7. Your site will be live within minutes!
 
 The `vercel.json` file in the project includes necessary rewrite rules and CORS headers for proper functionality.
+
+## Available Scripts
+
+- `npm start` - Start the development server
+- `npm run serve` - Serve the static files locally
+- `npm run build` - Build command for deployment (no build step required)
+- `npm run test` - Run tests (no tests configured)
+- `npm run deploy` - Deployment readiness check
 
 ## License
 
