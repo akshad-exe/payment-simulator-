@@ -1,6 +1,17 @@
 // Base API URL
 const API_BASE_URL = 'https://payment-simulator-2.onrender.com';
 
+// Function to wake up the backend API
+function wakeUpBackend() {
+    fetch(API_BASE_URL)
+        .then(response => {
+            console.log('Backend wake-up request sent. Status:', response.status);
+        })
+        .catch(error => {
+            console.log('Backend wake-up request failed (this is normal):', error.message);
+        });
+}
+
 // Function to navigate from landing page to checkout
 function proceedToCheckout() {
     window.location.href = 'checkout.html';
@@ -145,3 +156,6 @@ function retryPayment() {
 function goToLanding() {
     window.location.href = 'index.html';
 }
+
+// Wake up the backend when script loads
+wakeUpBackend();
