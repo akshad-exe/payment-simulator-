@@ -43,6 +43,9 @@ function simulatePayment(isSuccess) {
     const senderUpi = localStorage.getItem('senderUpi') || "user@upi";
     const paymentAmount = localStorage.getItem('paymentAmount') || "4560.00";
     
+    console.log('simulatePayment called with isSuccess:', isSuccess);
+    console.log('User details:', { senderName, senderPhone, senderUpi, paymentAmount });
+    
     // Create transaction first
     const transactionData = {
         amount: parseFloat(paymentAmount),
@@ -54,6 +57,8 @@ function simulatePayment(isSuccess) {
         receiver_phone: "+919876543211"
     };
     
+    console.log('Sending transaction data:', transactionData);
+    
     // Use fetch with comprehensive error handling and timeout
     fetchWithTimeout(`${API_BASE_URL}/`, {
         method: 'POST',
@@ -63,6 +68,10 @@ function simulatePayment(isSuccess) {
         body: JSON.stringify(transactionData)
     }, 10000) // 10 second timeout
     .then(response => {
+        console.log('Transaction creation response:', response);
+        console.log('Response status:', response.status);
+        console.log('Response OK:', response.ok);
+        
         // Handle different HTTP status codes
         if (response.status === 400) {
             throw new Error('Bad Request: Invalid transaction data');
@@ -85,9 +94,10 @@ function simulatePayment(isSuccess) {
     })
     .then(data => {
         console.log('Transaction created:', data);
-        if (data.id) {
+        if (data && data.id) {
             // Update transaction status based on isSuccess parameter
             const status = isSuccess ? 'success' : 'failed';
+            console.log('Updating transaction status to:', status);
             return fetchWithTimeout(`${API_BASE_URL}/${data.id}/status`, {
                 method: 'PUT',
                 headers: {
@@ -100,6 +110,10 @@ function simulatePayment(isSuccess) {
         }
     })
     .then(response => {
+        console.log('Status update response:', response);
+        console.log('Response status:', response.status);
+        console.log('Response OK:', response.ok);
+        
         // Handle different HTTP status codes for status update
         if (response.status === 400) {
             throw new Error('Bad Request: Invalid status update data');
@@ -125,8 +139,10 @@ function simulatePayment(isSuccess) {
         // Simulate API delay
         setTimeout(() => {
             if (isSuccess) {
+                console.log('Redirecting to success page');
                 window.location.href = 'transaction-success.html';
             } else {
+                console.log('Redirecting to failure page');
                 window.location.href = 'transaction-failed.html';
             }
         }, 1500);
